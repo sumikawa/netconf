@@ -16,8 +16,15 @@ $service->serializer
     ->envprefix("soapenv")
     ->encodingStyle(""); # remove encoding attributes from the envelope header
 
+hello();
+my $result = getconfig();
+
+print $result->valueof('//rpc-reply/rpc-reply/data/ConfigData');
+
+sub hello
+{
 # build and send a "hello" message
-# this is like "Omajinai".  You don't need to modify this section
+# this is like "Omajinai".  You don't need to modify this funxtion
 my @hello = (
     SOAP::Data->name("capabilities" => \SOAP::Data->value(
 			 SOAP::Data->name('capability' => "net:alaxala:oan:onapi:1.1"),
@@ -30,7 +37,10 @@ my @hello = (
 $service->call(SOAP::Data->name('hello')
 	       ->attr({xmlns => $namespace}) 
 	       => @hello);
+}
 
+sub getconfig
+{
 # get configuration
 # you need to modify the below section depending on what do you want to do
 my $rpc3 = SOAP::Data->name("source" => \SOAP::Data->value(
@@ -39,9 +49,7 @@ my $rpc2 = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
 my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
     ->attr({"message-id" => "710"});
 
-my $result = $service
-    ->call(SOAP::Data->name('rpc')
-	   ->attr({'xmlns' => $namespace})
-	   => \SOAP::Data->value($rpc1));
-
-print $result->valueof('//rpc-reply/rpc-reply/data/ConfigData');
+return $service->call(SOAP::Data->name('rpc')
+		      ->attr({'xmlns' => $namespace})
+		      => \SOAP::Data->value($rpc1));
+}
