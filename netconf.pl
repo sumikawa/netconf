@@ -34,6 +34,7 @@ my @hello = (
 		     )),
     SOAP::Data->name("session-id"),
     );
+
 $service->call(SOAP::Data->name('hello')
 	       ->attr({xmlns => $namespace}) 
 	       => @hello);
@@ -41,8 +42,6 @@ $service->call(SOAP::Data->name('hello')
 
 sub getconfig
 {
-# get configuration
-# you need to modify the below section depending on what do you want to do
 my $rpc3 = SOAP::Data->name("source" => \SOAP::Data->value(
 				SOAP::Data->name('running')));
 my $rpc2 = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
