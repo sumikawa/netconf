@@ -2,13 +2,13 @@
 
 use strict;
 use HTTP::Cookies;
-use SOAP::Lite;
-#use SOAP::Lite +trace => 'debug';
+#use SOAP::Lite;
+use SOAP::Lite +trace => 'debug';
 
 my $target = shift || die "usage: $0 [Alaxala box's IP address]\n";
 my $proxy = "http://$target:832/onapi/";  # SOAP endpoint URL of Alaxala box
 my $namespace = "urn:ietf:params:xml:ns:netconf:base:1.0";
-my $mesid = 1234; # Just ID.  Any number is fine.
+my $mesid = int(rand(5000)); # Just ID.  Any number should be fine.
 
 my $service = SOAP::Lite
     ->proxy($proxy, cookie_jar => HTTP::Cookies->new(ignore_discard => 1));
@@ -46,7 +46,8 @@ sub closesession
     my $rpc2 = SOAP::Data->name("close-session")
 	->type("ns1:closeSessionType");
     my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
-	->attr({"message-id" => "$mesid++"});
+	->attr({"message-id" => $mesid++});
+
     return $service->call(SOAP::Data->name('rpc')
 			  ->attr({'xmlns' => $namespace})
 			  => $rpc1);
@@ -59,7 +60,7 @@ sub getconfig
 				    SOAP::Data->name('running')));
     my $rpc2 = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
     my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
-	->attr({"message-id" => "$mesid++"});
+	->attr({"message-id" => $mesid++});
     
     return $service->call(SOAP::Data->name('rpc')
 			  ->attr({'xmlns' => $namespace})
