@@ -2,26 +2,27 @@
 
 use strict;
 use HTTP::Cookies;
-use SOAP::Lite;
-#use SOAP::Lite +trace => 'debug';
+#use SOAP::Lite;
+use SOAP::Lite +trace => 'debug';
 
-my $target = shift || die "usage: $0 [Alaxala product's IP address]\n";
-my $proxy = "http://$target:832/onapi/";  # SOAP service URL of Alaxala box
+my $target = shift || die "usage: $0 [Alaxala box's IP address]\n";
+my $proxy = "http://$target:832/onapi/";  # SOAP endpoint URL of Alaxala box
 my $namespace = "urn:ietf:params:xml:ns:netconf:base:1.0";
 
 my $service = SOAP::Lite
     ->proxy($proxy, cookie_jar => HTTP::Cookies->new(ignore_discard => 1));
 $service->serializer
-    ->envprefix("soapenv")
-    ->encodingStyle(""); # remove encoding attributes from the envelope header
+    ->envprefix("soapenv") # for alaxala interoperability
+    ->encodingStyle("");   # for alaxala interoperability
 
 hello($service);
 print getconfig($service)->valueof('//rpc-reply/rpc-reply/data/ConfigData');
+closesession($service);
+
+exit;
 
 sub hello
 {
-# build and send a "hello" message
-# this is like "Omajinai".  You don't need to modify this funxtion
     my $service = shift;
     my @hello = (
 	SOAP::Data->name("capabilities" => \SOAP::Data->value(
@@ -38,6 +39,18 @@ sub hello
 			  => @hello);
 }
 
+sub closesession
+{
+    my $service = shift;
+    my $rpc2 = SOAP::Data->name("close-session")
+	->type("ns1:closeSessionType");
+    my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
+	->attr({"message-id" => "713"});
+    return $service->call(SOAP::Data->name('rpc')
+			  ->attr({'xmlns' => $namespace})
+			  => $rpc1);
+}
+
 sub getconfig
 {
     my $service = shift;
@@ -49,7 +62,7 @@ sub getconfig
     
     return $service->call(SOAP::Data->name('rpc')
 			  ->attr({'xmlns' => $namespace})
-			  => \SOAP::Data->value($rpc1));
+			  => $rpc1);
 }
 
 #$Id$
