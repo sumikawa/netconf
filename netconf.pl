@@ -40,17 +40,24 @@ sub hello
 			  => @hello);
 }
 
+sub genrpc
+{
+    my ($service, $mes) = @_;
+
+    my $rpc = SOAP::Data->name("rpc" => \SOAP::Data->value($mes))
+	->attr({"message-id" => $mesid++});
+    return $service->call(SOAP::Data->name('rpc')
+			  ->attr({'xmlns' => $namespace})
+			  => $rpc);
+}
+
 sub closesession
 {
     my $service = shift;
-    my $rpc2 = SOAP::Data->name("close-session")
+    my $mes = SOAP::Data->name("close-session")
 	->type("ns1:closeSessionType");
-    my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
-	->attr({"message-id" => $mesid++});
 
-    return $service->call(SOAP::Data->name('rpc')
-			  ->attr({'xmlns' => $namespace})
-			  => $rpc1);
+    return genrpc($service, $mes);
 }
 
 sub getconfig
@@ -58,13 +65,9 @@ sub getconfig
     my $service = shift;
     my $rpc3 = SOAP::Data->name("source" => \SOAP::Data->value(
 				    SOAP::Data->name('running')));
-    my $rpc2 = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
-    my $rpc1 = SOAP::Data->name("rpc" => \SOAP::Data->value($rpc2))
-	->attr({"message-id" => $mesid++});
+    my $mes = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
     
-    return $service->call(SOAP::Data->name('rpc')
-			  ->attr({'xmlns' => $namespace})
-			  => $rpc1);
+    return genrpc($service, $mes);
 }
 
 #$Id$
