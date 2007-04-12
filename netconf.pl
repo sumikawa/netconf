@@ -63,9 +63,9 @@ sub closesession
 sub getconfig
 {
     my $service = shift;
-    my $rpc3 = SOAP::Data->name("source" => \SOAP::Data->value(
+    my $rpc = SOAP::Data->name("source" => \SOAP::Data->value(
 				    SOAP::Data->name('running')));
-    my $mes = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc3));
+    my $mes = SOAP::Data->name("get-config" => \SOAP::Data->value($rpc));
     
     return genrpc($service, $mes);
 }
