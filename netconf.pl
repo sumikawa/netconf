@@ -6,7 +6,7 @@ use HTTP::Cookies;
 use SOAP::Lite +trace => 'debug';
 
 my $target = shift || die "usage: $0 [Alaxala box's IP address]\n";
-my $proxy = "http://$target:832/onapi/";  # SOAP endpoint URL of Alaxala box
+my $proxy = "http://$target:832/onapi";  # SOAP endpoint URL of Alaxala box
 my $namespace = "urn:ietf:params:xml:ns:netconf:base:1.0";
 my $mesid = int(rand(5000)); # Just ID.  Any number should be fine.
 
