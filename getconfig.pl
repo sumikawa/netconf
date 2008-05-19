@@ -2,8 +2,8 @@
 
 use strict;
 use HTTP::Cookies;
-#use SOAP::Lite;
-use SOAP::Lite +trace => 'debug';
+use SOAP::Lite;
+#use SOAP::Lite +trace => 'debug';
 
 my $target = shift || die "usage: $0 [Alaxala box's IP address]\n";
 my $proxy = "http://$target:832/onapi";  # SOAP endpoint URL of Alaxala box
