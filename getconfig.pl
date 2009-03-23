@@ -69,5 +69,3 @@ sub getconfig
     
     return genrpc($service, $mes);
 }
-
-#$Id$
