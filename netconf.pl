@@ -1,5 +1,4 @@
 #!/usr/local/bin/perl
-
 use strict;
 use HTTP::Cookies;
 use SOAP::Lite;
@@ -7,6 +6,19 @@ use SOAP::Lite;
 
 my $namespace = "urn:ietf:params:xml:ns:netconf:base:1.0";
 my $mesid = int(rand(5000));	# Just ID.  Any number should be fine.
+
+sub setup {
+    my $target = shift;
+    my $proxy = "http://$_:832/onapi"; # SOAP endpoint URL of Alaxala box
+    my $service = SOAP::Lite
+	->proxy($proxy, cookie_jar => HTTP::Cookies->new(ignore_discard => 1));
+
+    $service->serializer
+	->envprefix("soapenv")	 # for alaxala interoperability
+	    ->encodingStyle(""); # for alaxala interoperability
+
+    return $service;
+}
 
 sub hello {
     my $service = shift;
