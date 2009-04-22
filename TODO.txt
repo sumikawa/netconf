@@ -1,0 +1,5 @@
+config2git.pl
+- 秘密情報(TCP MD5, SNMP commumity, radius secret key)を消すフィルター
+
+全般
+- WSDLからstubを生成して、もう一度遊んでみる
