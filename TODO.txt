@@ -1,5 +1,5 @@
 config2git.pl
-- ÈëÌ©¾ğÊó(TCP MD5, SNMP commumity, radius secret key)¤ò¾Ã¤¹¥Õ¥£¥ë¥¿¡¼
+- ç§˜å¯†æƒ…å ±(TCP MD5, SNMP commumity, radius secret key)ã‚’æ¶ˆã™ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
 
-Á´ÈÌ
-- WSDL¤«¤éstub¤òÀ¸À®¤·¤Æ¡¢¤â¤¦°ìÅÙÍ·¤ó¤Ç¤ß¤ë
+å…¨èˆ¬
+- WSDLã‹ã‚‰stubã‚’ç”Ÿæˆã—ã¦ã€ã‚‚ã†ä¸€åº¦éŠã‚“ã§ã¿ã‚‹
