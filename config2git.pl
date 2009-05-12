@@ -21,6 +21,7 @@ chdir($gitdir);
 system("git add .");
 my @tmp = localtime(time);
 my $d = sprintf("%04d%02d%02d_%02d%02d", $tmp[5] + 1900, $tmp[4] + 1, $tmp[3], $tmp[4], $tmp[5]);
+system("git diff");
 system("git commit -a -m $d");
 
 print ("Finish.\n");
